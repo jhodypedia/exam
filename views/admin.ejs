@@ -1,0 +1,112 @@
+<% layout('layouts/main') %>
+<main class="container mt-5">
+  <h3 class="mb-4">Admin Panel CBT EPS-TOPIK</h3>
+
+  <!-- Form Buat Set Soal -->
+  <div class="card mb-4">
+    <div class="card-header">📚 Buat Set Soal</div>
+    <div class="card-body">
+      <form id="formSet">
+        <div class="mb-3">
+          <label>Judul Set Soal</label>
+          <input type="text" class="form-control" name="title" required />
+        </div>
+        <div class="mb-3">
+          <label>Password (key) untuk Akses</label>
+          <input type="text" class="form-control" name="key_token" required />
+        </div>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Tambah Set</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Form Upload Audio -->
+  <div class="card mb-4">
+    <div class="card-header">🎧 Upload Audio Listening</div>
+    <div class="card-body">
+      <form id="formAudio" enctype="multipart/form-data">
+        <div class="mb-3">
+          <input type="file" class="form-control" name="audio" accept="audio/*" required />
+        </div>
+        <button type="submit" class="btn btn-success"><i class="fas fa-upload"></i> Upload Audio</button>
+      </form>
+      <div id="audioUrl" class="mt-2 text-success fw-bold"></div>
+    </div>
+  </div>
+
+  <!-- Form Tambah Soal -->
+  <div class="card mb-4">
+    <div class="card-header">📝 Tambah Soal</div>
+    <div class="card-body">
+      <form id="formQuestion">
+        <div class="mb-3">
+          <label>ID Set Soal</label>
+          <input type="text" class="form-control" name="exam_set_id" required />
+        </div>
+        <div class="mb-3">
+          <label>Jenis Soal</label>
+          <select class="form-control" name="type">
+            <option value="reading">Reading</option>
+            <option value="listening">Listening</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label>Soal</label>
+          <textarea class="form-control" name="question_text" required></textarea>
+        </div>
+        <div class="mb-3">
+          <label>Opsi Jawaban (pisahkan dengan koma)</label>
+          <input type="text" class="form-control" name="options" required />
+        </div>
+        <div class="mb-3">
+          <label>Jawaban Benar</label>
+          <input type="text" class="form-control" name="correct_answer" required />
+        </div>
+        <div class="mb-3">
+          <label>Audio URL (jika ada)</label>
+          <input type="text" class="form-control" name="audio_url" id="audio_url" />
+        </div>
+        <button type="submit" class="btn btn-warning"><i class="fas fa-paper-plane"></i> Tambah Soal</button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<script>
+  $('#formSet').on('submit', function (e) {
+    e.preventDefault();
+    $.post('/admin/create-set', $(this).serialize(), res => {
+      toastr.success(res.message);
+      this.reset();
+    }).fail(err => toastr.error(err.responseJSON.message));
+  });
+
+  $('#formAudio').on('submit', function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    $.ajax({
+      url: '/admin/upload-audio',
+      method: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: res => {
+        toastr.success(res.message);
+        $('#audioUrl').text('Audio URL: ' + res.url);
+        $('#audio_url').val(res.url);
+      },
+      error: err => toastr.error(err.responseJSON.message)
+    });
+  });
+
+  $('#formQuestion').on('submit', function (e) {
+    e.preventDefault();
+    const data = $(this).serializeArray();
+    const optionsField = data.find(d => d.name === 'options');
+    optionsField.value = JSON.stringify(optionsField.value.split(',').map(o => o.trim()));
+    $.post('/admin/create-question', $.param(data), res => {
+      toastr.success(res.message);
+      this.reset();
+    }).fail(err => toastr.error(err.responseJSON.message));
+  });
+</script>
