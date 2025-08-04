@@ -1,0 +1,29 @@
+<% layout('layouts/main') -%>
+<main class="container mt-5">
+  <h3 class="mb-4 text-center">Review Jawaban</h3>
+  <p class="text-center">Skor Anda: <strong><%= score %> / 100</strong></p>
+
+  <div class="accordion" id="reviewAccordion">
+    <% answers.forEach((item, index) => { %>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading<%= index %>">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= index %>">
+            Soal <%= index + 1 %>
+          </button>
+        </h2>
+        <div id="collapse<%= index %>" class="accordion-collapse collapse" data-bs-parent="#reviewAccordion">
+          <div class="accordion-body">
+            <p><strong>Pertanyaan:</strong> <%= item.question %></p>
+            <p><strong>Jawaban Anda:</strong> 
+              <span class="<%= item.isCorrect ? 'text-success' : 'text-danger' %>">
+                <%= item.selectedOption %> 
+                (<%= item.isCorrect ? 'Benar' : 'Salah' %>)
+              </span>
+            </p>
+            <p><strong>Jawaban Benar:</strong> <span class="text-success"><%= item.correctAnswer %></span></p>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</main>
