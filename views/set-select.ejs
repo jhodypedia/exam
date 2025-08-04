@@ -1,0 +1,16 @@
+<% layout('layouts/main') -%>
+<main class="container mt-5">
+  <h2 class="mb-4 text-center">Pilih Set Soal</h2>
+  <div class="row">
+    <% for(let i = 1; i <= 50; i++) { %>
+      <div class="col-md-3 mb-3">
+        <div class="card shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title">Set <%= i %></h5>
+            <button class="btn btn-primary btn-sm start-exam-btn" data-set="<%= i %>">Mulai Ujian</button>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</main>
