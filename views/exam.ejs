@@ -1,0 +1,18 @@
+<% layout('layouts/main') -%>
+<main class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 id="exam-section-title">Reading Section</h5>
+    <div class="text-danger fw-bold">
+      Sisa Waktu: <span id="time-remaining">50:00</span>
+    </div>
+  </div>
+
+  <div id="exam-content" class="mb-4">
+    <!-- Soal akan ditampilkan via SPA JS -->
+  </div>
+
+  <div class="d-flex justify-content-between">
+    <button id="prev-btn" class="btn btn-secondary" disabled>Kembali</button>
+    <button id="next-btn" class="btn btn-primary">Berikutnya</button>
+  </div>
+</main>
