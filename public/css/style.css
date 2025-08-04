@@ -1,0 +1,49 @@
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: linear-gradient(145deg, #e3f2fd, #ffffff);
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+.card {
+  border: none;
+  box-shadow: 0 0 15px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 0 25px rgba(0,0,0,0.1);
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.text-center img {
+  max-width: 120px;
+  margin-bottom: 15px;
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease-in;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.timer-box {
+  font-size: 18px;
+  font-weight: bold;
+  color: #d32f2f;
+}
