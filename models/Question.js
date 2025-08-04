@@ -1,25 +1,16 @@
-const db = require('../config/db');
+module.exports = (sequelize, DataTypes) => {
+  const Question = sequelize.define('Question', {
+    setId: { type: DataTypes.INTEGER, allowNull: false },
+    type: { type: DataTypes.ENUM('reading', 'listening'), allowNull: false },
+    questionText: { type: DataTypes.TEXT, allowNull: false },
+    image: { type: DataTypes.STRING }, // jika soal pakai gambar
+    audio: { type: DataTypes.STRING }, // untuk soal listening
+    optionA: { type: DataTypes.STRING, allowNull: false },
+    optionB: { type: DataTypes.STRING, allowNull: false },
+    optionC: { type: DataTypes.STRING, allowNull: false },
+    optionD: { type: DataTypes.STRING, allowNull: false },
+    correctAnswer: { type: DataTypes.STRING, allowNull: false }, // A/B/C/D
+  });
 
-const Question = {
-  create: (data, callback) => {
-    const query = `INSERT INTO questions (exam_set_id, type, question_text, options, correct_answer, audio_url) VALUES (?, ?, ?, ?, ?, ?)`;
-    db.query(query, [
-      data.exam_set_id,
-      data.type,
-      data.question_text,
-      JSON.stringify(data.options),
-      data.correct_answer,
-      data.audio_url || null
-    ], callback);
-  },
-
-  getBySetId: (setId, callback) => {
-    db.query(`SELECT * FROM questions WHERE exam_set_id = ? ORDER BY type ASC, id ASC`, [setId], callback);
-  },
-
-  getBySetIdAndType: (setId, type, callback) => {
-    db.query(`SELECT * FROM questions WHERE exam_set_id = ? AND type = ? ORDER BY id ASC`, [setId, type], callback);
-  }
+  return Question;
 };
-
-module.exports = Question;
