@@ -1,0 +1,28 @@
+{
+  "name": "cbt-eps-topik",
+  "description": "Sistem CBT EPS-TOPIK Korea menggunakan Node.js dan Sequelize",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "CBT Team",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "",
+    "cors": "",
+    "dotenv": "",
+    "express": "",
+    "express-session": "",
+    "jsonwebtoken": "",
+    "mysql2": "",
+    "sequelize": "",
+    "uuid": "",
+    "multer": "",
+    "ejs": "",
+    "express-ejs-layouts": ""
+  },
+  "devDependencies": {
+    "nodemon": ""
+  }
+}
