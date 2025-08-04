@@ -1,30 +1,19 @@
-const db = require('../config/db');
+const bcrypt = require('bcryptjs');
 
-const User = {
-  create: (data, callback) => {
-    const query = `INSERT INTO users (username, email, password, phone, role, is_premium, key_token) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-    db.query(query, [
-      data.username,
-      data.email,
-      data.password,
-      data.phone,
-      data.role || 'user',
-      data.is_premium || 0,
-      data.key_token || null
-    ], callback);
-  },
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define('User', {
+    username: { type: DataTypes.STRING, allowNull: false, unique: true },
+    email: { type: DataTypes.STRING, allowNull: false, unique: true },
+    phone: { type: DataTypes.STRING, allowNull: true },
+    password: { type: DataTypes.STRING, allowNull: false },
+    role: { type: DataTypes.ENUM('user', 'admin'), defaultValue: 'user' },
+    isPremium: { type: DataTypes.BOOLEAN, defaultValue: false },
+  });
 
-  findByEmail: (email, callback) => {
-    db.query(`SELECT * FROM users WHERE email = ?`, [email], callback);
-  },
+  User.beforeCreate(async (user) => {
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
+  });
 
-  findById: (id, callback) => {
-    db.query(`SELECT * FROM users WHERE id = ?`, [id], callback);
-  },
-
-  upgradeToPremium: (id, key_token, callback) => {
-    db.query(`UPDATE users SET is_premium = 1, key_token = ? WHERE id = ?`, [key_token, id], callback);
-  }
+  return User;
 };
-
-module.exports = User;
